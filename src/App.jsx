@@ -9,13 +9,16 @@ function App() {
   const [yesButtons,setYesButtons]=useState(1)
   const [isAccept,setIsAccepted]=useState(false)
   const noButtonRef=useRef(null)
+  const yesButtonsRef=useRef([])
 
   useEffect(() => {
-    gsap.from(".yes-btn", {
-      y: -20,
-      stagger: 0.1,
-      duration: 0.5,
-      ease: "bounce.inOut(1,0.5)",
+    gsap.to(yesButtonsRef.current, {
+      y: -40, 
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      stagger: 0.2
     });
   }, [yesButtons]);
 
@@ -25,7 +28,8 @@ function App() {
       x:-Math.floor(Math.random()*200),
       y:-Math.floor(Math.random()*200),
       duration:0.1,
-        ease:"bounce.inOut"
+      ease:"bounce.inOut"
+      
     })
     setYesButtons((prev) => prev + 1);
   }
@@ -77,6 +81,7 @@ function App() {
             {
               !isAccept&& Array.from({length:yesButtons}).map((_,index)=>(
                 <button 
+                ref={(el) => (yesButtonsRef.current[index] = el)}
                 onClick={()=>setIsAccepted(true)}
                 key={index}
                 className="yes-btn bg-green-500 text-white px-4 py-2 rounded-lg font-semibold m-5 shadow-lg hover:bg-green-600 transition-all"
